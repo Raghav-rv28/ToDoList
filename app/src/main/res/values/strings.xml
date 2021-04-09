@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">ToDoList</string>
+    <string name="task_title_hint"> Enter a title</string>
+    <string name="task_title">Title</string>
+    <string name="Task_details_label">Details</string>
+    <string name="Completed">Task Complete</string>
+    <string name="Reminder">Remind Me</string>
+</resources>

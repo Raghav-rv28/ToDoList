@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/editTextTitle"
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        android:layout_marginTop="10dp"
+        android:text="@string/task_title_hint"/>
+
+    <CheckBox
+        android:id="@+id/checkBox"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:fontFamily="sans-serif"
+        android:paddingLeft="25dp"
+        android:text="@string/Completed"
+        android:textSize="18sp" />
+
+    <EditText
+        android:id="@+id/editTextTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="time"
+        android:layout_marginTop="25dp"
+        android:padding="25dp"
+        android:text="@string/Reminder" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="match_parent"
+        android:layout_height="77dp"
+        android:backgroundTint="#000000"
+        android:drawableLeft="@drawable/ic_action_name"
+        android:paddingLeft="25dp"
+        android:text="Due Date"
+        android:textAlignment="textStart"
+        android:textColor="#FFFFFF" />
+
+</LinearLayout>
