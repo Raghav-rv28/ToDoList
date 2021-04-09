@@ -4,5 +4,11 @@
     <string name="task_title">Title</string>
     <string name="Task_details_label">Details</string>
     <string name="Completed">Task Complete</string>
-    <string name="Reminder">Remind Me</string>
+    <string name="Notes">Write your Notes here!</string>
+    <string-array name="Level_array">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+    </string-array>
 </resources>

@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -59,7 +60,7 @@ class TaskListFragment:Fragment() {
         private lateinit var task: Task
         private val titleTextView: TextView = itemView.findViewById(R.id.editTextTitle)
         private val dateTextView: TextView = itemView.findViewById(R.id.editTextDate)
-
+        private val notesImgView: ImageView = itemView.findViewById(R.id.notesView)
         init{
             itemView.setOnClickListener(this)
         }
@@ -67,7 +68,12 @@ class TaskListFragment:Fragment() {
         fun bind(task: Task){
             this.task= task
             titleTextView.text= this.task.title
-            dateTextView.text= this.task.date.toString()
+            dateTextView.text= "${ this.task.date.toString() } • "
+            notesImgView.visibility = if(task.notes != "" ){
+                View.VISIBLE
+            } else {
+                View.GONE
+            }
         }
 
         override fun onClick(v: View?) {
