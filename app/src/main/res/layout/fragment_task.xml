@@ -4,45 +4,61 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:paddingRight="10dp"
+    android:paddingLeft="10dp"
+    android:background="@color/white">
 
     <EditText
         android:id="@+id/editTextTitle"
         android:layout_width="match_parent"
         android:layout_height="75dp"
-        android:layout_marginTop="10dp"
-        android:text="@string/task_title_hint"/>
+        android:layout_marginTop="50dp"
+        android:hint="@string/task_title_hint"/>
 
     <CheckBox
         android:id="@+id/checkBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif"
-        android:paddingLeft="25dp"
         android:text="@string/Completed"
         android:textSize="18sp" />
 
     <Button
+        android:id="@+id/mydaybutton"
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        android:backgroundTint="@color/dbltrans"
+        android:drawableLeft="@drawable/ic_baseline_wb_sunny_24"
+        android:text="@string/myDay"
+        android:textAlignment="textStart"
+        android:textColor="@color/black" />
+
+
+    <EditText
+        android:id="@+id/eisenhowerNumber"
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        android:hint="@string/eisenhower_level_hint"
+        android:ems="10"
+        android:inputType="number" />
+    <Button
         android:id="@+id/button"
         android:layout_width="match_parent"
-        android:layout_height="77dp"
-        android:backgroundTint="#000000"
+        android:layout_height="75dp"
+        android:backgroundTint="@color/dbltrans"
         android:drawableLeft="@drawable/ic_action_name"
-        android:paddingLeft="25dp"
         android:text="Due Date"
         android:textAlignment="textStart"
-        android:textColor="#FFFFFF" />
+        android:textColor="@color/black" />
 
     <EditText
         android:id="@+id/editTextTime"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="75dp"
         android:inputType="textMultiLine"
         android:padding="25dp"
-        android:text="@string/Notes" />
+        android:hint="@string/Notes"/>
 
-    <Spinner
-        android:id="@+id/spinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+
 </LinearLayout>

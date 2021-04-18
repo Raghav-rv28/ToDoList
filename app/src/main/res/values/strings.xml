@@ -5,6 +5,9 @@
     <string name="Task_details_label">Details</string>
     <string name="Completed">Task Complete</string>
     <string name="Notes">Write your Notes here!</string>
+    <string name="new_task">New Task</string>
+    <string name= "myDay">Add to My Day</string>
+    <string name= "eisenhower_level_hint">Enter Priority Level Between 1-4</string>
     <string-array name="Level_array">
         <item>1</item>
         <item>2</item>

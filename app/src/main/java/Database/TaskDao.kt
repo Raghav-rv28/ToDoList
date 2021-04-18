@@ -1,7 +1,7 @@
 package Database
 
-import androidx.room.Dao
-import androidx.room.Query
+import androidx.lifecycle.LiveData
+import androidx.room.*
 import com.example.todolist.Task
 import java.util.*
 
@@ -9,8 +9,18 @@ import java.util.*
 interface TaskDao {
 
     @Query("SELECT * FROM task")
-    fun getTasks(): List<Task>
+    fun getTasks(): LiveData<List<Task>>
 
     @Query("SELECT * FROM task WHERE id=(:id)")
-    fun getTask(id: UUID): Task?
+    fun getTask(id: UUID): LiveData<Task?>
+    
+    @Update
+    fun updateTask(task: Task)
+    
+    @Insert
+    fun addTask(task: Task)
+
+    @Delete
+    fun deleteTask(task: Task)
+
 }
