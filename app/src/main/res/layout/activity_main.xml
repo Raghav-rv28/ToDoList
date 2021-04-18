@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/bg">
+    android:background="@color/white">
     <FrameLayout
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
@@ -26,7 +26,8 @@
             android:background="@color/trans"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
-            android:src="@drawable/list_icon"></ImageView>
+            android:src="@drawable/list_icon"
+            android:onClick="listFragment"></ImageView>
 
         <ImageView
             android:id="@+id/CalendarView"

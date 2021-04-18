@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/backGround"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
@@ -7,13 +8,14 @@
     android:layout_height="match_parent"
     android:paddingRight="10dp"
     android:paddingLeft="10dp"
+    android:paddingTop="25dp"
     android:background="@color/white">
 
     <EditText
         android:id="@+id/editTextTitle"
         android:layout_width="match_parent"
         android:layout_height="75dp"
-        android:layout_marginTop="50dp"
+        android:textSize="24dp"
         android:hint="@string/task_title_hint"/>
 
     <CheckBox
@@ -35,6 +37,14 @@
         android:textColor="@color/black" />
 
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/eisenhower_level_hint"
+        android:textSize="14dp"
+        android:textColor="@color/black"
+        android:paddingTop="5dp">
+    </TextView>
     <EditText
         android:id="@+id/eisenhowerNumber"
         android:layout_width="match_parent"
@@ -42,6 +52,23 @@
         android:hint="@string/eisenhower_level_hint"
         android:ems="10"
         android:inputType="number" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/ecl_hint"
+        android:textSize="14dp"
+        android:textColor="@color/black"
+        android:paddingTop="5dp">
+    </TextView>
+    <EditText
+        android:id="@+id/expectedCompletionTime"
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        android:hint="@string/ecl_hint"
+        android:ems="10"
+        android:inputType="number" />
+
     <Button
         android:id="@+id/button"
         android:layout_width="match_parent"
@@ -59,6 +86,5 @@
         android:inputType="textMultiLine"
         android:padding="25dp"
         android:hint="@string/Notes"/>
-
 
 </LinearLayout>

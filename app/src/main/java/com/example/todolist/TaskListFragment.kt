@@ -1,4 +1,4 @@
-package com.example.todolist
+  package com.example.todolist
 
 import android.content.Context
 import android.graphics.Paint
@@ -23,9 +23,9 @@ class TaskListFragment:Fragment(), DatePickerFragment.Listener {
         fun onClickTask(id: UUID)
     }
 
-    private lateinit var myDayButton: Button
-    private lateinit var nextDayButton: Button
-    private lateinit var anyDayButton: Button
+    private lateinit var myDayButton: ImageView
+    private lateinit var nextDayButton: ImageView
+    private lateinit var anyDayButton: ImageView
     private lateinit var taskRecyclerView: RecyclerView
     private var listener: Listener? = null
 
@@ -170,8 +170,8 @@ class TaskListFragment:Fragment(), DatePickerFragment.Listener {
             override fun getItemCount() = tasks.size
 
             }    //ADAPTER ENDS HERE
-/**
-    override fun onDateSelected(date: Date) {
-    TODO("Not yet implemented")
-    }*/
+
+            override fun onDateSelected(date: Date) {
+                Log.i(TAG,"I WILL DO NOTHING FOR NOW")
+            }
 }//TASK LIST FRAGMENT ENDS HERE

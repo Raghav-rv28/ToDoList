@@ -8,6 +8,7 @@
     <string name="new_task">New Task</string>
     <string name= "myDay">Add to My Day</string>
     <string name= "eisenhower_level_hint">Enter Priority Level Between 1-4</string>
+    <string name="ecl_hint">Enter Expected Time to Complete the Task</string>
     <string-array name="Level_array">
         <item>1</item>
         <item>2</item>

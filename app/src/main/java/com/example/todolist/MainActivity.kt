@@ -3,7 +3,9 @@ package com.example.todolist
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.ImageView
+import androidx.fragment.app.Fragment
 import java.util.*
 private const val TAG = "MainActivity"
 private lateinit var ListViewButton: ImageView
@@ -32,10 +34,14 @@ class MainActivity : AppCompatActivity(), TaskListFragment.Listener {
         if (currentFragment == null) {
             val fragment = TaskListFragment.newInstance()
             supportFragmentManager
-                .beginTransaction()
-                .add(R.id.fragment_container, fragment)
-                .commit()
-        }
+                    .beginTransaction()
+                    .add(R.id.fragment_container, fragment)
+                    .commit() }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        //ListViewButton.setOnClickListener
     }
 /**
     fun calendarFragment():
