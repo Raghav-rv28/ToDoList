@@ -133,6 +133,7 @@ class TaskListFragment:Fragment(), DatePickerFragment.Listener {
         private val titleTextView: TextView = itemView.findViewById(R.id.editTextTitle)
         private val dateTextView: TextView = itemView.findViewById(R.id.editTextDate)
         private val notesImgView: ImageView = itemView.findViewById(R.id.notesView)
+        private val etcIndicator: TextView = itemView.findViewById(R.id.ETCindicator)
 
         init {
             itemView.setOnClickListener(this)
@@ -141,17 +142,22 @@ class TaskListFragment:Fragment(), DatePickerFragment.Listener {
         fun bind(task: Task) {
             this.task = task
             titleTextView.text = this.task.title
-            if (task.completed) {
-                titleTextView.apply {
-                    paintFlags = paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
-                }
-            }
-                dateTextView.text = "${this.task.date.toString()}"
+            etcIndicator.text = this.task.ETC.toString()
+                var date = this.task.date.toString()
+                val index = date.indexOf(" ",8,false)
+                date = date.substring(0,index)
+            
+                dateTextView.text = date
                 notesImgView.visibility = if (!task.notes.equals("")) {
                     View.VISIBLE
                 } else {
                     View.GONE
                 }
+            if (task.completed) {
+                titleTextView.apply {
+                    paintFlags = paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+                }
+            }
             }
         } //TASK HOLDER ENDS HERE
 

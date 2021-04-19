@@ -5,5 +5,12 @@
         android:id="@+id/new_task"
         android:title="@string/new_task"
         android:icon="@drawable/plus_icon"
-        app:showAsAction="ifRoom|withText"/>
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:title="Delete"
+        app:showAsAction="ifRoom"
+        android:iconTint="@android:color/white"
+        android:icon="@drawable/ic_baseline_delete_24"
+        android:id="@+id/menu_delete"/>
 </menu>

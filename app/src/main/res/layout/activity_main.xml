@@ -27,7 +27,7 @@
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:src="@drawable/list_icon"
-            android:onClick="listFragment"></ImageView>
+            android:onClick="listViewSwitch"></ImageView>
 
         <ImageView
             android:id="@+id/CalendarView"

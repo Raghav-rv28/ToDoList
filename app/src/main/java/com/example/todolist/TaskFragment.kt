@@ -1,12 +1,11 @@
 package com.example.todolist
 
+import android.app.AlertDialog
 import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.*
 import androidx.annotation.VisibleForTesting
 import androidx.fragment.app.Fragment
@@ -19,6 +18,7 @@ private const val TASK_ID_KEY = "task_id_key"
 private const val DIALOG_DATE = "dialog_date"
 private const val REQUEST_DATE = 0
 class TaskFragment: Fragment(), DatePickerFragment.Listener {
+    //Local
     private lateinit var task: Task
 
     private lateinit var tasktitle: EditText
@@ -50,7 +50,10 @@ class TaskFragment: Fragment(), DatePickerFragment.Listener {
 
     private fun updateUI() {
         tasktitle.setText(task.title)
-        dateButton.text = task.date.toString()
+        var curDate = task.date.toString()
+        val index = curDate.indexOf(" ",8,false)
+        curDate = curDate.substring(0,index)
+        dateButton.text = curDate
         taskNotes.setText(task.notes)
         taskLevel.setText(task.ECL.toString())
         taskEtc.setText(task.ETC.toString())
@@ -73,7 +76,7 @@ class TaskFragment: Fragment(), DatePickerFragment.Listener {
             container: ViewGroup?,
             savedInstance: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_task, container, false)
-
+        //Local
         tasktitle = view.findViewById(R.id.editTextTitle) as EditText
         taskNotes = view.findViewById(R.id.editTextTime) as EditText
         taskLevel = view.findViewById(R.id.eisenhowerNumber) as EditText
@@ -86,6 +89,7 @@ class TaskFragment: Fragment(), DatePickerFragment.Listener {
             text = task.date.toString()
             isEnabled = true
         }
+        setHasOptionsMenu(true)
         return view
     }
 
@@ -118,6 +122,7 @@ class TaskFragment: Fragment(), DatePickerFragment.Listener {
             0.also { task.ETC = it }
         }
     }
+
 
     override fun onStart() {
         super.onStart()
@@ -170,6 +175,7 @@ class TaskFragment: Fragment(), DatePickerFragment.Listener {
                 myDayButton.text = "Add to My Day"
                 dateButton.text = "Add Due Date"
             }
+            updateUI()
         }
 
         // ADD A DUE DATE
@@ -182,20 +188,53 @@ class TaskFragment: Fragment(), DatePickerFragment.Listener {
     }
         override fun onStop() {
             super.onStop()
+            saveData()
+        }
+        fun saveData(){
             taskDetailViewModel.saveTask(task)
             Toast.makeText(requireContext(), "Successfully Saved!", Toast.LENGTH_SHORT).show()
         }
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.fragment_task_list, menu)
+    }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.menu_delete) {
+            deleteUser()
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun deleteUser() {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setPositiveButton("Yes") { _, _ ->
+            taskDetailViewModel.deleteTask(this.task)
+            Toast.makeText(
+                    requireContext(),
+                    "Successfully removed: ${this.task.title}",
+                    Toast.LENGTH_SHORT).show()
+            fragmentManager!!.beginTransaction().remove(this).commitAllowingStateLoss();
+            val fragment = TaskListFragment.newInstance()
+            fragmentManager!!
+                    .beginTransaction()
+                    .add(R.id.fragment_container, fragment)
+                    .commit()
+        }
+        builder.setNegativeButton("No") { _, _ -> }
+        builder.setTitle("Delete ${this.task.title}?")
+        builder.setMessage("Are you sure you want to delete ${this.task.title}?")
+        builder.create().show()
+    }
         companion object {
-            fun newInstance(crimeId: UUID): TaskFragment {
+            fun newInstance(taskId: UUID): TaskFragment {
                 return TaskFragment().apply {
-                    arguments = newArguments(crimeId)
+                    arguments = newArguments(taskId)
                 }
             }
 
             @VisibleForTesting
-            fun newArguments(crimeId: UUID) = Bundle().apply {
-                putSerializable(TASK_ID_KEY, crimeId)
+            fun newArguments(taskId: UUID) = Bundle().apply {
+                putSerializable(TASK_ID_KEY, taskId)
             }
         }
 

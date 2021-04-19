@@ -5,8 +5,9 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
-import androidx.fragment.app.Fragment
+import android.widget.Toast
 import java.util.*
+
 private const val TAG = "MainActivity"
 private lateinit var ListViewButton: ImageView
 private lateinit var CalendarViewButton: ImageView
@@ -28,9 +29,9 @@ class MainActivity : AppCompatActivity(), TaskListFragment.Listener {
 
         ListViewButton = findViewById(R.id.listView)
         CalendarViewButton = findViewById(R.id.CalendarView)
+
         val currentFragment =
             supportFragmentManager.findFragmentById(R.id.fragment_container)
-
         if (currentFragment == null) {
             val fragment = TaskListFragment.newInstance()
             supportFragmentManager
@@ -39,10 +40,19 @@ class MainActivity : AppCompatActivity(), TaskListFragment.Listener {
                     .commit() }
     }
 
-    override fun onStart() {
-        super.onStart()
-        //ListViewButton.setOnClickListener
-    }
+
+    fun listViewSwitch(view: View) {
+        val currentFragment = supportFragmentManager.findFragmentById(R.id.fragment_container)
+
+        if(currentFragment != TaskListFragment.newInstance() || currentFragment != TaskFragment.newInstance(UUID.randomUUID())){
+            val fragment = TaskListFragment.newInstance()
+            supportFragmentManager
+                    .beginTransaction()
+                    .add(R.id.fragment_container, fragment)
+                    .commit()
+            }
+
+        }
 /**
     fun calendarFragment():
     {
