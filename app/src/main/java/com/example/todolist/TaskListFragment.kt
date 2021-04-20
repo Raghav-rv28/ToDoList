@@ -1,15 +1,15 @@
   package com.example.todolist
 
 import android.content.Context
+import android.graphics.Color
 import android.graphics.Paint
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -27,6 +27,7 @@ class TaskListFragment:Fragment(), DatePickerFragment.Listener {
     private lateinit var nextDayButton: ImageView
     private lateinit var anyDayButton: ImageView
     private lateinit var taskRecyclerView: RecyclerView
+    private lateinit var sortingSpinner: Spinner
     private var listener: Listener? = null
 
     private var adapter: TaskAdapter? = TaskAdapter(emptyList())
@@ -40,6 +41,20 @@ class TaskListFragment:Fragment(), DatePickerFragment.Listener {
         setHasOptionsMenu(true)
     }
 
+    private fun addItemsOnSpinner(context:Context) {
+
+// Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter.createFromResource(
+            context,
+            R.array.Sort,
+            android.R.layout.simple_spinner_item
+        ).also { adapter ->
+            // Specify the layout to use when the list of choices appears
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            // Apply the adapter to the spinner
+            sortingSpinner.adapter = adapter
+        }
+    }
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -47,32 +62,54 @@ class TaskListFragment:Fragment(), DatePickerFragment.Listener {
             savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_task_list, container, false)
-
+        sortingSpinner = view.findViewById(R.id.spinner1)
         myDayButton = view.findViewById(R.id.myDay)
         nextDayButton = view.findViewById(R.id.nextDay)
         anyDayButton = view.findViewById(R.id.anyDay)
         taskRecyclerView = view.findViewById(R.id.task_recycler_view) as RecyclerView
         taskRecyclerView.layoutManager = LinearLayoutManager(context)
         taskRecyclerView.adapter = adapter
+
+        context?.let { addItemsOnSpinner(it) };
+        sortingSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+            ) {
+                sorting(sortingSpinner.selectedItemPosition)
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                //Do Nothing
+            }
+        }
+
         return view
+
     }
 
-    override fun onStart() {
-        super.onStart()
-        myDayButton.setOnClickListener{
-            //populates with tasks due today
+    fun sorting(x: Int){
+        Log.i(TAG,"this is position: $x")
+        when (x) {
+            0->populatingTasks(taskListViewModel.getTasksSortedLevelAsc())
+            1-> populatingTasks(taskListViewModel.getTasksSortedLevelDesc())
+            2-> populatingTasks(taskListViewModel.getTasksSortedEtcAsc())
+            3-> populatingTasks(taskListViewModel.getTasksSortedEtcDesc())
+            4-> populatingTasks(taskListViewModel.getTasksSortedDateAsc())
+            5-> populatingTasks(taskListViewModel.getTasksSortedDateDesc())
+            6-> populatingTasks(taskListViewModel.tasksListLiveData)
         }
-        nextDayButton.setOnClickListener{
-            //populates with tasks due tomorrow
         }
-        anyDayButton.setOnClickListener{
-            //choose the due date and tasks will be added
-        }
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        taskListViewModel.tasksListLiveData.observe(
+        populatingTasks(taskListViewModel.tasksListLiveData)
+    }
+
+    private fun populatingTasks(tasks: LiveData<List<Task>>){
+        tasks.observe(
                 viewLifecycleOwner,
                 Observer { tasks: List<Task> ->
                     tasks?.let {
@@ -120,7 +157,6 @@ class TaskListFragment:Fragment(), DatePickerFragment.Listener {
         }
     }
 
-
     private inner class TaskHolder(view: View)
         : RecyclerView.ViewHolder(view), View.OnClickListener {
 
@@ -134,11 +170,18 @@ class TaskListFragment:Fragment(), DatePickerFragment.Listener {
         private val dateTextView: TextView = itemView.findViewById(R.id.editTextDate)
         private val notesImgView: ImageView = itemView.findViewById(R.id.notesView)
         private val etcIndicator: TextView = itemView.findViewById(R.id.ETCindicator)
+        private val constraintLayout: ConstraintLayout = itemView.findViewById(R.id.constraintLayoutList)
 
         init {
             itemView.setOnClickListener(this)
         }
 
+        fun background( x: Int) {
+            if(x == 1) constraintLayout.setBackgroundColor(Color.parseColor("#FF0000"))
+            if(x == 2) constraintLayout.setBackgroundColor(Color.parseColor("#FFA500"))
+            if(x == 3) constraintLayout.setBackgroundColor(Color.parseColor("#90EE90"))
+            if(x == 4) constraintLayout.setBackgroundColor(Color.parseColor("#0000FF"))
+        }
         fun bind(task: Task) {
             this.task = task
             titleTextView.text = this.task.title
@@ -158,6 +201,7 @@ class TaskListFragment:Fragment(), DatePickerFragment.Listener {
                     paintFlags = paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
                 }
             }
+                background(task.ECL)
             }
         } //TASK HOLDER ENDS HERE
 

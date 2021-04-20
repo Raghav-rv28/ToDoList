@@ -41,13 +41,26 @@
 
     </LinearLayout>
 
+        <Spinner
+            android:id="@+id/spinner1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:entries="@array/Sort"
+            android:prompt="@string/sorting_Prompt" />
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/task_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="5dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:background="@color/trans">
-
     </androidx.recyclerview.widget.RecyclerView>
+
+</LinearLayout>
+
 </LinearLayout>

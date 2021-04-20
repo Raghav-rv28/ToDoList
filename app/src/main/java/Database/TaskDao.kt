@@ -23,4 +23,26 @@ interface TaskDao {
     @Delete
     fun deleteTask(task: Task)
 
+    //DUE DATE
+    @Query("SELECT * FROM task ORDER BY date asc")
+    fun getTasksSortedDateAsc(): LiveData<List<Task>>
+
+    @Query("SELECT * FROM task ORDER BY date desc")
+    fun getTasksSortedDateDesc(): LiveData<List<Task>>
+
+    //LEVEL
+    @Query("SELECT * FROM task ORDER BY ecl asc")
+    fun getTasksSortedLevelAsc(): LiveData<List<Task>>
+
+    @Query("SELECT * FROM task ORDER BY ecl desc")
+    fun getTasksSortedLevelDesc(): LiveData<List<Task>>
+
+    //Etc
+    @Query("SELECT * FROM task ORDER BY etc asc")
+    fun getTasksSortedEtcAsc(): LiveData<List<Task>>
+
+    @Query("SELECT * FROM task ORDER BY etc desc")
+    fun getTasksSortedEtcDesc(): LiveData<List<Task>>
+
+
 }
