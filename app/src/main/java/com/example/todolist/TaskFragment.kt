@@ -57,7 +57,7 @@ class TaskFragment: Fragment(), DatePickerFragment.Listener {
         taskNotes.setText(task.notes)
         taskLevel.setText(task.ECL.toString())
         taskEtc.setText(task.ETC.toString())
-        background(task.ECL)
+        task.ECL?.let { background(it) }
         completedCheckBox.apply {
             isChecked = task.completed
             jumpDrawablesToCurrentState()
@@ -123,7 +123,6 @@ class TaskFragment: Fragment(), DatePickerFragment.Listener {
         }
     }
 
-
     override fun onStart() {
         super.onStart()
         //TITLE
@@ -166,7 +165,7 @@ class TaskFragment: Fragment(), DatePickerFragment.Listener {
         myDayButton.setOnClickListener {
             if(myDayButton.text.equals("Add to My Day"))
             {
-                task.date = Date()
+                task.date = Date(0,0,0)
                 myDayButton.text = "Added to My Day"
                 dateButton.text = task.date.toString()
             }

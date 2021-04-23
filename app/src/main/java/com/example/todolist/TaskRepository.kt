@@ -52,6 +52,7 @@ class TaskRepository private constructor(context: Context){
     fun getTasksSortedEtcAsc(): LiveData<List<Task>>  = taskDAO.getTasksSortedEtcAsc()
     fun getTasksSortedEtcDesc(): LiveData<List<Task>>  = taskDAO.getTasksSortedEtcDesc()
 
+    fun findTaskByDate(targetDate: Date): LiveData<List<Task>>  = taskDAO.findTaskByDate(targetDate)
 
     companion object {
         private var INSTANCE: TaskRepository? = null

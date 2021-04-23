@@ -44,5 +44,8 @@ interface TaskDao {
     @Query("SELECT * FROM task ORDER BY etc desc")
     fun getTasksSortedEtcDesc(): LiveData<List<Task>>
 
+    @Query("SELECT * FROM task WHERE date = :targetDate")
+    fun findTaskByDate(targetDate: Date): LiveData<List<Task>>
+
 
 }

@@ -3,6 +3,7 @@
 import android.content.Context
 import android.graphics.Color
 import android.graphics.Paint
+import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -176,12 +177,22 @@ class TaskListFragment:Fragment(), DatePickerFragment.Listener {
             itemView.setOnClickListener(this)
         }
 
-        fun background( x: Int) {
-            if(x == 1) constraintLayout.setBackgroundColor(Color.parseColor("#FF0000"))
-            if(x == 2) constraintLayout.setBackgroundColor(Color.parseColor("#FFA500"))
-            if(x == 3) constraintLayout.setBackgroundColor(Color.parseColor("#90EE90"))
-            if(x == 4) constraintLayout.setBackgroundColor(Color.parseColor("#0000FF"))
+        fun background(x: Int) {
+            val customBar = GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, intArrayOf(Color.parseColor("#000000"),Color.parseColor("#000000")))
+            customBar.cornerRadius = 15f
+            customBar.setStroke(2, Color.parseColor("#000000"))
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
+                customBar.setPadding(0,0,0,10)
+            }
+            if(x == 1)  customBar.setColor(Color.parseColor("#FF0000"))
+            if(x == 2)  customBar.setColor(Color.parseColor("#FFA500"))
+            if(x == 3)  customBar.setColor(Color.parseColor("#90EE90"))
+            if(x == 4)  customBar.setColor(Color.parseColor("#0000FF"))
+            else
+            {customBar.setColor(Color.parseColor("#ffffff"))}
+            constraintLayout.background = customBar
         }
+
         fun bind(task: Task) {
             this.task = task
             titleTextView.text = this.task.title
@@ -201,7 +212,7 @@ class TaskListFragment:Fragment(), DatePickerFragment.Listener {
                     paintFlags = paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
                 }
             }
-                background(task.ECL)
+            task.ECL?.let { background(it) }
             }
         } //TASK HOLDER ENDS HERE
 
