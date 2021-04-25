@@ -10,4 +10,8 @@
     <color name="grey">#808080</color>
     <color name="trans">#75000000</color>
     <color name="dbltrans">#00000000</color>
+    <color name="lightRed">#e64847</color>
+    <color name="lightOrange">#fca041</color>
+    <color name="lightGreen">#59eb00</color>
+    <color name="lightBlue">#02e3ea</color>
 </resources>

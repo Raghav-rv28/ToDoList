@@ -10,6 +10,7 @@ import android.widget.*
 import androidx.annotation.VisibleForTesting
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import org.joda.time.LocalDate
 import java.util.*
 
 
@@ -43,16 +44,14 @@ class TaskFragment: Fragment(), DatePickerFragment.Listener {
         taskDetailViewModel.loadTask(taskId)
     }
 
-    override fun onDateSelected(date: Date) {
+    override fun onDateSelected(date: LocalDate) {
         task.date = date
         updateUI()
     }
 
     private fun updateUI() {
         tasktitle.setText(task.title)
-        var curDate = task.date.toString()
-        val index = curDate.indexOf(" ",8,false)
-        curDate = curDate.substring(0,index)
+        var curDate = task.date.toString("EEE, dd MMM")
         dateButton.text = curDate
         taskNotes.setText(task.notes)
         taskLevel.setText(task.ECL.toString())
@@ -64,11 +63,11 @@ class TaskFragment: Fragment(), DatePickerFragment.Listener {
         }
     }
 
-    fun background(x: Int) {
-        if(x == 1) background.setBackgroundColor(Color.parseColor("#75FF0000"))
-        if(x == 2) background.setBackgroundColor(Color.parseColor("#75FFA500"))
-        if(x == 3) background.setBackgroundColor(Color.parseColor("#7590EE90"))
-        if(x == 4) background.setBackgroundColor(Color.parseColor("#750000FF"))
+    private fun background(x: Int) {
+        if(x == 1) background.setBackgroundColor(Color.parseColor("#80e64847"))
+        if(x == 2) background.setBackgroundColor(Color.parseColor("#80fca041"))
+        if(x == 3) background.setBackgroundColor(Color.parseColor("#8059eb00"))
+        if(x == 4) background.setBackgroundColor(Color.parseColor("#8002e3ea"))
     }
 
     override fun onCreateView(
@@ -165,12 +164,13 @@ class TaskFragment: Fragment(), DatePickerFragment.Listener {
         myDayButton.setOnClickListener {
             if(myDayButton.text.equals("Add to My Day"))
             {
-                task.date = Date(0,0,0)
+                val dateToday = LocalDate()
+                task.date = dateToday
                 myDayButton.text = "Added to My Day"
-                dateButton.text = task.date.toString()
+                dateButton.text = dateToday.toString("EEE, dd MMM")
             }
              else if(myDayButton.text.equals("Added to My Day")){
-                 task.date = Date(0, 0, 0)
+                 task.date = LocalDate(0)
                 myDayButton.text = "Add to My Day"
                 dateButton.text = "Add Due Date"
             }

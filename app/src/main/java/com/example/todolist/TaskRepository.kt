@@ -4,6 +4,7 @@ import Database.TaskDatabase
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.room.Room
+import org.joda.time.LocalDate
 import java.util.*
 import java.util.concurrent.Executors
 
@@ -52,7 +53,7 @@ class TaskRepository private constructor(context: Context){
     fun getTasksSortedEtcAsc(): LiveData<List<Task>>  = taskDAO.getTasksSortedEtcAsc()
     fun getTasksSortedEtcDesc(): LiveData<List<Task>>  = taskDAO.getTasksSortedEtcDesc()
 
-    fun findTaskByDate(targetDate: Date): LiveData<List<Task>>  = taskDAO.findTaskByDate(targetDate)
+    fun findTaskByDate(targetDate: LocalDate): LiveData<List<Task>>  = taskDAO.findTaskByDate(targetDate)
 
     companion object {
         private var INSTANCE: TaskRepository? = null

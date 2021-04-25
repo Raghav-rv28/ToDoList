@@ -15,9 +15,16 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import org.joda.time.LocalDate
+import org.joda.time.format.DateTimeFormat
+import org.joda.time.format.DateTimeFormatter
 import java.util.*
 
-private const val TAG = "TASKLISTFRAGMENT"
+
+  private const val TAG = "TASKLISTFRAGMENT"
+  private const val DIALOG_DATE = "dialog_date"
+  private const val REQUEST_DATE = 0
+
 class TaskListFragment:Fragment(), DatePickerFragment.Listener {
 
     interface Listener {
@@ -42,7 +49,7 @@ class TaskListFragment:Fragment(), DatePickerFragment.Listener {
         setHasOptionsMenu(true)
     }
 
-    private fun addItemsOnSpinner(context:Context) {
+    private fun addItemsOnSpinner(context: Context) {
 
 // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter.createFromResource(
@@ -58,9 +65,9 @@ class TaskListFragment:Fragment(), DatePickerFragment.Listener {
     }
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_task_list, container, false)
         sortingSpinner = view.findViewById(R.id.spinner1)
@@ -71,13 +78,23 @@ class TaskListFragment:Fragment(), DatePickerFragment.Listener {
         taskRecyclerView.layoutManager = LinearLayoutManager(context)
         taskRecyclerView.adapter = adapter
 
+        myDayButton.setOnClickListener {myDayTasks()}
+        nextDayButton.setOnClickListener{nextDayTasks()}
+        val customDay = LocalDate()
+        anyDayButton.setOnClickListener {
+            DatePickerFragment.newInstance(customDay).apply {
+                setTargetFragment(this@TaskListFragment, REQUEST_DATE)
+                show(this@TaskListFragment.requireFragmentManager(), DIALOG_DATE)
+            }
+        }
+
         context?.let { addItemsOnSpinner(it) };
         sortingSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onItemSelected(
-                    parent: AdapterView<*>?,
-                    view: View?,
-                    position: Int,
-                    id: Long
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
             ) {
                 sorting(sortingSpinner.selectedItemPosition)
             }
@@ -91,16 +108,17 @@ class TaskListFragment:Fragment(), DatePickerFragment.Listener {
 
     }
 
+
     fun sorting(x: Int){
-        Log.i(TAG,"this is position: $x")
+        Log.i(TAG, "this is position: $x")
         when (x) {
-            0->populatingTasks(taskListViewModel.getTasksSortedLevelAsc())
-            1-> populatingTasks(taskListViewModel.getTasksSortedLevelDesc())
-            2-> populatingTasks(taskListViewModel.getTasksSortedEtcAsc())
-            3-> populatingTasks(taskListViewModel.getTasksSortedEtcDesc())
-            4-> populatingTasks(taskListViewModel.getTasksSortedDateAsc())
-            5-> populatingTasks(taskListViewModel.getTasksSortedDateDesc())
-            6-> populatingTasks(taskListViewModel.tasksListLiveData)
+            0 -> populatingTasks(taskListViewModel.getTasksSortedLevelAsc())
+            1 -> populatingTasks(taskListViewModel.getTasksSortedLevelDesc())
+            2 -> populatingTasks(taskListViewModel.getTasksSortedEtcAsc())
+            3 -> populatingTasks(taskListViewModel.getTasksSortedEtcDesc())
+            4 -> populatingTasks(taskListViewModel.getTasksSortedDateAsc())
+            5 -> populatingTasks(taskListViewModel.getTasksSortedDateDesc())
+            6 -> populatingTasks(taskListViewModel.tasksListLiveData)
         }
         }
 
@@ -109,15 +127,30 @@ class TaskListFragment:Fragment(), DatePickerFragment.Listener {
         populatingTasks(taskListViewModel.tasksListLiveData)
     }
 
-    private fun populatingTasks(tasks: LiveData<List<Task>>){
+    fun myDayTasks(){
+        var dateToday = LocalDate()
+        val tasksWithDueDateToday: LiveData<List<Task>> = taskListViewModel.findTaskByDate(dateToday)
+        populatingTasks(tasksWithDueDateToday)
+    }
+
+    fun nextDayTasks(){
+        var dateTomorrow = LocalDate()
+        dateTomorrow = dateTomorrow.plusDays(1)
+        val tasksWithDueDateTomorrow: LiveData<List<Task>> = taskListViewModel.findTaskByDate(
+            dateTomorrow
+        )
+        populatingTasks(tasksWithDueDateTomorrow)
+    }
+
+    fun populatingTasks(tasks: LiveData<List<Task>>){
         tasks.observe(
-                viewLifecycleOwner,
-                Observer { tasks: List<Task> ->
-                    tasks?.let {
-                        Log.i(TAG, "Got Tasks ${tasks.size}")
-                        setRecyclerViewAdapter(tasks)
-                    }
-                })
+            viewLifecycleOwner,
+            Observer { tasks: List<Task> ->
+                tasks?.let {
+                    Log.i(TAG, "Got Tasks ${tasks.size}")
+                    setRecyclerViewAdapter(tasks)
+                }
+            })
     }
 
     override fun onAttach(context: Context) {
@@ -178,41 +211,34 @@ class TaskListFragment:Fragment(), DatePickerFragment.Listener {
         }
 
         fun background(x: Int) {
-            val customBar = GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, intArrayOf(Color.parseColor("#000000"),Color.parseColor("#000000")))
+            when(x){
+                1->  backgroundGradient(Color.parseColor("#e64847"))
+                2->  backgroundGradient(Color.parseColor("#fca041"))
+                3->  backgroundGradient(Color.parseColor("#59eb00"))
+                4->  backgroundGradient(Color.parseColor("#02e3ea"))
+                else ->  backgroundGradient(Color.parseColor("#ffffff"))
+            }
+        }
+
+        fun backgroundGradient(x: Int) {
+            val customBar = GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, intArrayOf(x, x))
             customBar.cornerRadius = 15f
             customBar.setStroke(2, Color.parseColor("#000000"))
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
-                customBar.setPadding(0,0,0,10)
+                customBar.setPadding(0, 0, 0, 10)
             }
-            if(x == 1)  customBar.setColor(Color.parseColor("#FF0000"))
-            if(x == 2)  customBar.setColor(Color.parseColor("#FFA500"))
-            if(x == 3)  customBar.setColor(Color.parseColor("#90EE90"))
-            if(x == 4)  customBar.setColor(Color.parseColor("#0000FF"))
-            else
-            {customBar.setColor(Color.parseColor("#ffffff"))}
             constraintLayout.background = customBar
         }
 
         fun bind(task: Task) {
             this.task = task
             titleTextView.text = this.task.title
+            var date = this.task.date
+            dateTextView.text = date.toString("EEE, dd MMM")
             etcIndicator.text = this.task.ETC.toString()
-                var date = this.task.date.toString()
-                val index = date.indexOf(" ",8,false)
-                date = date.substring(0,index)
-            
-                dateTextView.text = date
-                notesImgView.visibility = if (!task.notes.equals("")) {
-                    View.VISIBLE
-                } else {
-                    View.GONE
-                }
-            if (task.completed) {
-                titleTextView.apply {
-                    paintFlags = paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
-                }
-            }
             task.ECL?.let { background(it) }
+            notesImgView.visibility = if (!task.notes.equals("")) { View.VISIBLE } else { View.GONE }
+            if (task.completed) { titleTextView.apply { paintFlags = paintFlags or Paint.STRIKE_THRU_TEXT_FLAG } }
             }
         } //TASK HOLDER ENDS HERE
 
@@ -232,7 +258,8 @@ class TaskListFragment:Fragment(), DatePickerFragment.Listener {
 
             }    //ADAPTER ENDS HERE
 
-            override fun onDateSelected(date: Date) {
-                Log.i(TAG,"I WILL DO NOTHING FOR NOW")
+            override fun onDateSelected(date: LocalDate) {
+                val chosenDay = date
+                populatingTasks(taskListViewModel.findTaskByDate(chosenDay))
             }
 }//TASK LIST FRAGMENT ENDS HERE

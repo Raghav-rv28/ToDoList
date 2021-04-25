@@ -4,6 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.todolist.Task
 import java.util.*
+import org.joda.time.DateTime
+import org.joda.time.LocalDate
+
 
 @Dao
 interface TaskDao {
@@ -45,7 +48,7 @@ interface TaskDao {
     fun getTasksSortedEtcDesc(): LiveData<List<Task>>
 
     @Query("SELECT * FROM task WHERE date = :targetDate")
-    fun findTaskByDate(targetDate: Date): LiveData<List<Task>>
+    fun findTaskByDate(targetDate: LocalDate): LiveData<List<Task>>
 
 
 }

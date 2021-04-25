@@ -2,6 +2,8 @@ package com.example.todolist
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import org.joda.time.LocalDate
+
 
 class TaskListViewModel: ViewModel(){
 
@@ -34,5 +36,8 @@ class TaskListViewModel: ViewModel(){
     }
     fun getTasksSortedEtcDesc():LiveData<List<Task>> {
         return taskRepository.getTasksSortedEtcDesc()
+    }
+    fun findTaskByDate(date: LocalDate): LiveData<List<Task>> {
+        return taskRepository.findTaskByDate(date)
     }
 }

@@ -17,6 +17,7 @@
             android:layout_weight="1"
             android:background="@color/trans"
             android:paddingRight="5dp"
+            android:onClick="myDayTasks"
             android:src="@drawable/myday_icon" />
 
         <ImageView
@@ -26,6 +27,7 @@
             android:layout_weight="1"
             android:src="@drawable/nextday_icon"
             android:background="@color/trans"
+            android:onClick="nextDayTasks"
             android:paddingRight="5dp" />
 
         <ImageView
