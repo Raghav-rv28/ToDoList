@@ -123,3 +123,6 @@ data and binds it to the Recyclerview . The TaskAdapter tiggers it so that it bi
  Adapter class  tiggers the holder class and then the holder class that populates 
 the data .
  
+ ***Files***
+ ![alt text](![2021-04-28 (2)](https://user-images.githubusercontent.com/76601342/116447090-9c08a280-a825-11eb-9f0c-d80b8209f3cf.png)
+)
